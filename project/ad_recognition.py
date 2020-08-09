@@ -40,7 +40,6 @@ def dhash(image, hashSize=8):
 	return sum([2 ** i for (i, v) in enumerate(diff.flatten()) if v])
 
 
-
 res1=[]
 res2=[]
 # res1 list stores the path of all stream images(frames)
@@ -52,6 +51,7 @@ for j in range(0,len(ads)):
 
 #hash1 dictionary stores the hash values of ad images
 hash1={}
+
 for p in res2:
 	# load the image from disk
 	image = cv2.imread(p)
@@ -72,11 +72,11 @@ def process(p):
 	imageHash = dhash(image)
 	return imageHash,p
 
-#multiprocessing 
 
 path2=[]
 path=[]
 #path stores the path of matched ad_frames and path2 stores the path of matched stream frames
+#multiprocessing 
 if __name__ == "__main__":
 	def calc(fps):
 		p = multiprocessing.Pool(10)
@@ -96,12 +96,14 @@ if __name__ == "__main__":
 				hash1.pop(x)
 		p.close()
 		p.join()
-	fps=red("fps60")
 	#fdur is a list that contains duration of each ad	
+	fps=red("fps60")
 	fdur = [int(np.ceil(x / float(fps))) for x in size]
 	mongo(ads,fdur)	
 	create_table()
 	calc(fps)
 					
 finish=time.perf_counter()	
-print(f'finished in {round(fi
+print(f'finished in {round(finish-start,2)}second(s)')
+
+
